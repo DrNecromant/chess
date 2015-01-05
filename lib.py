@@ -79,7 +79,6 @@ class Board(object):
 		log.debug("Set new piece %s on %s" % (piece, square))
 		square.piece = piece
 		piece.callbacksChangeSquare = self._movePiece
-		piece.observe = lambda x, y: self.getSquare((x, y), error = False)
 		self.info["pieces"][(square.x, square.y)] = piece
 
 	def _movePiece(self, square1, square2):
@@ -106,7 +105,7 @@ if __name__ == "__main__":
 	s4 = b.getSquare("h5")
 	pawn.square = s4
 	log.debug("=== Moves ===")
-	for m in pawn.getMoves():
+	for m in pawn.getMoves(observe = lambda x, y: b.getSquare((x, y), error = False)):
 		log.debug(m)
 
 	for obj_type in b.info:

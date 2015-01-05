@@ -23,7 +23,6 @@ class Piece(object):
 	def __init__(self, name, color):
 		self._square = None
 		self._callbacksChangeSquare = list()
-		self.observe = None
 		self.name = name
 		self.color = color
 
@@ -58,14 +57,13 @@ class Bishop(Piece):
 	def __init__(self, name, color):
 		Piece.__init__(self, name, color)
 
-	def getMoves(self):
+	def getMoves(self, observe):
 		for delta in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
 			x, y = self.square.x, self.square.y
 			dx, dy = delta
 			while True:
 				x += dx
 				y += dy
-				square = self.observe(x, y)
-				if not square:
+				if observe(x, y) is None:
 					break
-				yield square
+				yield x, y
