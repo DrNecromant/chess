@@ -73,8 +73,6 @@ class Board(object):
 
 	def setPiece(self, pos, name, color):
 		square = self.getSquare(pos)
-		if square.piece is not None:
-			raise GameError("Pos %s is already busy with %s %s" % square.piece.info)
 		piece = self.getPiece(name, color)
 		log.debug("Set new piece %s on %s" % (piece, square))
 		square.piece = piece
