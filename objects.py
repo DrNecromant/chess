@@ -1,3 +1,6 @@
+from logger import log
+from errors import *
+
 class Square(object):
 	def __init__(self, name, x, y):
 		self._piece = None
@@ -15,14 +18,12 @@ class Square(object):
 	@piece.setter
 	def piece(self, piece):
 		self._piece = piece
-		#check argument to avoid recursive setters
 		if piece.square != self:
 			piece.square = self
 
 class Piece(object):
 	def __init__(self, name, color):
 		self._square = None
-		self._callbacksChangeSquare = list()
 		self.name = name
 		self.color = color
 
@@ -32,24 +33,12 @@ class Piece(object):
 		return "%s %s %s" % (self.color, self.name, self.square)
 
 	@property
-	def callbacksChangeSquare(self):
-		return self._callbacksChangeSquare
-
-	@callbacksChangeSquare.setter
-	def callbacksChangeSquare(self, callback):
-		self._callbacksChangeSquare.append(callback)
-
-	@property
 	def square(self):
 		return self._square
 
 	@square.setter
 	def square(self, square):
-		if self._square is not None:
-			for callback in self.callbacksChangeSquare:
-				callback(self._square, square)
 		self._square = square
-		#check argument to avoid recursive setters
 		if square.piece != self:
 			square.piece = self
 
