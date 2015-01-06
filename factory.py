@@ -16,7 +16,9 @@ class Board(object):
 		self.numbers = self.numbers[:size]
 
 	def _check_pos_value(self, pos):
-		# Check that position value is correct. For example, "e4" or (4, 3)
+		"""
+		Check that position value is correct. For example, "e4" or (4, 3)
+		"""
 		if type(pos) not in (tuple, str):
 			raise PositionError("Wrong square position type %s %s" % (pos, type(pos)))
 		if len(pos) != 2:
