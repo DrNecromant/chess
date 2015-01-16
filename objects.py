@@ -21,24 +21,6 @@ class Square(object):
 		if piece.square != self:
 			piece.square = self
 
-class Color(object):
-	def __init__(self, name):
-		self.name = name
-		self._piece = set()
-
-	def __str__(self):
-		return self.name
-
-	@property
-	def piece(self):
-		return self._piece
-
-	@piece.setter
-	def piece(self, piece):
-		self._piece.add(piece)
-		if piece.color != self:
-			piece.color = self
-
 class Piece(object):
 	def __init__(self, name):
 		self.name = name
@@ -73,6 +55,24 @@ class Piece(object):
 		self._color = color
 		if self not in color.piece:
 			color.piece = self
+
+class Color(object):
+	def __init__(self, name):
+		self.name = name
+		self._piece = set()
+
+	def __str__(self):
+		return self.name
+
+	@property
+	def piece(self):
+		return self._piece
+
+	@piece.setter
+	def piece(self, piece):
+		self._piece.add(piece)
+		if piece.color != self:
+			piece.color = self
 
 class Movement(object):
 	def __init__(self, name):
