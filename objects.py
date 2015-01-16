@@ -21,16 +21,37 @@ class Square(object):
 		if piece.square != self:
 			piece.square = self
 
-class Piece(object):
-	def __init__(self, name, color):
-		self._square = None
+class Color(object):
+	def __init__(self, name):
 		self.name = name
-		self.color = color
+		self._piece = set()
 
 	def __str__(self):
-		if self._square is None:
-			return "%s %s" % (self.color, self.name)
-		return "%s %s %s" % (self.color, self.name, self.square)
+		return self.name
+
+	@property
+	def piece(self):
+		return self._piece
+
+	@piece.setter
+	def piece(self, piece):
+		self._piece.add(piece)
+		if piece.color != self:
+			piece.color = self
+
+class Piece(object):
+	def __init__(self, name):
+		self.name = name
+		self._square = None
+		self._color = None
+
+	def __str__(self):
+		piece_attrs = [self.name]
+		if self._color:
+			piece_attrs.append(str(self._color))
+		if self._square:
+			piece_attrs.append(str(self._square))
+		return "-".join(piece_attrs)
 
 	@property
 	def square(self):
@@ -42,9 +63,19 @@ class Piece(object):
 		if square.piece != self:
 			square.piece = self
 
+	@property
+	def color(self):
+		return self._color
+
+	@color.setter
+	def color(self, color):
+		self._color = color
+		if self not in color.piece:
+			color.piece = self
+
 class Bishop(Piece):
-	def __init__(self, name, color):
-		Piece.__init__(self, name, color)
+	def __init__(self, name):
+		Piece.__init__(self, name)
 
 	def getMoves(self, observe):
 		for delta in ((1, 1), (1, -1), (-1, 1), (-1, -1)):

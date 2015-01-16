@@ -5,8 +5,7 @@ from errors import *
 
 class Board(object):
 	def __init__(self, size):
-		#FIXME Set color as a separate object
-		self._squares = {}
+		self.squares = {}
 		self.letters = list(string.ascii_lowercase)
 		letters_range = len(self.letters)
 		if size > letters_range:
@@ -40,27 +39,40 @@ class Board(object):
 		else:
 			x, y = pos
 			name = self.letters[x] + self.numbers[y]
-		if self._squares.get(name) is None:
+		if self.squares.get(name) is None:
 			log.debug("Get new square %s" % name)
-			square = Square(name, x, y)
-			self._squares[name] = square
-		return self._squares[name]
+			self.squares[name] = Square(name, x, y)
+		return self.squares[name]
 
 	@property
 	def info(self):
-		return self._squares
+		return self.squares
 
 class PieceManager(object):
 	def __init__(self):
-		self._pieces = []
+		self.pieces = set()
 
-	def createPiece(self, name, color):
-		log.debug("Create new piece %s %s" % (name, color))
+	def createPiece(self, name):
+		log.debug("Create new piece %s" % name)
 		if name == "Bishop":
-			piece = Bishop(name, color)
-		self._pieces.append(piece)
+			piece = Bishop(name)
+		self.pieces.add(piece)
 		return piece
 
 	@property
 	def info(self):
-		return self._pieces
+		return self.pieces
+
+class ColorManager(object):
+	def __init__(self):
+		self.colors = {}
+
+	def getColor(self, name):
+		if self.colors.get(name) is None:
+			log.debug("Get new color %s" % name)
+			self.colors[name] = Color(name)
+		return self.colors[name]
+
+	@property
+	def info(self):
+		return self.colors
