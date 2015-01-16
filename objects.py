@@ -62,6 +62,16 @@ class Piece(object):
 		if self not in color.piece:
 			color.piece = self
 
+	@property
+	def movement(self):
+		return self._movement
+
+	@movement.setter
+	def movement(self, movement):
+		self._movement = movement
+		if self not in movement.piece:
+			movement.piece = self
+
 class Color(object):
 	def __init__(self, name):
 		self.name = name
@@ -85,6 +95,7 @@ class Movement(object):
 		self.name = name
 		self._piece = set()
 		self.directions = set()
+		self.steps = set()
 
 	def __str__(self):
 		return self.name
@@ -100,13 +111,17 @@ class Movement(object):
 			piece.movement = self
 
 	def getMoves(self):
-		for direction in directions:
-			square = self.piece.square
-			x, y = square.x, square.y
-			dx, dy = direction
+		square = self.piece.square
+		x0, y0 = square.x, square.y
+		for dx, dy in directions:
+			x, y = x0, y0
 			while True:
 				x += dx
 				y += dy
 				if observe(x, y) is None:
 					break
 				yield x, y
+		for x, y in steps:
+			if observe(x, y) is None:
+				break
+			yield x, y
