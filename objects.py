@@ -44,6 +44,7 @@ class Piece(object):
 		self.name = name
 		self._square = None
 		self._color = None
+		self._movement = None
 
 	def __str__(self):
 		piece_attrs = [self.name]
@@ -73,14 +74,30 @@ class Piece(object):
 		if self not in color.piece:
 			color.piece = self
 
-class Bishop(Piece):
+class Movement(object):
 	def __init__(self, name):
-		Piece.__init__(self, name)
+		self.name = name
+		self._piece = set()
+		self.directions = set()
 
-	def getMoves(self, observe):
-		for delta in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
-			x, y = self.square.x, self.square.y
-			dx, dy = delta
+	def __str__(self):
+		return self.name
+
+	@property
+	def piece(self):
+		return self._piece
+
+	@piece.setter
+	def piece(self, piece):
+		self._piece.add(piece)
+		if piece.movement != self:
+			piece.movement = self
+
+	def getMoves(self):
+		for direction in directions:
+			square = self.piece.square
+			x, y = square.x, square.y
+			dx, dy = direction
 			while True:
 				x += dx
 				y += dy

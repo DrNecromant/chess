@@ -54,8 +54,7 @@ class PieceManager(object):
 
 	def createPiece(self, name):
 		log.debug("Create new piece %s" % name)
-		if name == "Bishop":
-			piece = Bishop(name)
+		piece = Piece(name)
 		self.pieces.add(piece)
 		return piece
 
@@ -76,3 +75,13 @@ class ColorManager(object):
 	@property
 	def info(self):
 		return self.colors
+
+class MovementManager(object):
+	def __init__(self):
+		self.movements = {}
+
+	def getMovement(name):
+		if self.movements.get(name) is None:
+			log.debug("Get new movement %s" % name)
+			self.movements[name] = Movement(name)
+		return self.movements[name]
