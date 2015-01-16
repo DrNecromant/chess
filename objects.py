@@ -11,6 +11,9 @@ class Square(object):
 	def __str__(self):
 		return self.name
 
+	def clear(self):
+		self._piece = None
+
 	@property
 	def piece(self):
 		return self._piece
@@ -42,6 +45,9 @@ class Piece(object):
 
 	@square.setter
 	def square(self, square):
+		if self._square is not None:
+			# clear old square
+			self._square.clear()
 		self._square = square
 		if square.piece != self:
 			square.piece = self
