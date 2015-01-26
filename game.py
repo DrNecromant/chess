@@ -5,6 +5,7 @@ if __name__ == "__main__":
 	b = Board(8)
 	pm = PieceManager()
 	cm = ColorManager()
+	mm = MovementManager()
 
 	s1 = b.getSquare("b4")
 	s2 = b.getSquare((0, 2))
@@ -16,6 +17,7 @@ if __name__ == "__main__":
 
 	black = cm.getColor("Black")
 	white = cm.getColor("White")
+	move = mm.getMovement("move")
 
 	p1.color = black
 	s2.piece = p1
@@ -25,6 +27,14 @@ if __name__ == "__main__":
 
 	p2.color = white
 	p2.square = s4
+
+	move.directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)])
+	move.observe = b.observeSquare
+	move.piece = p1
+	p2.movement = move
+
+	moves1 = list(p1.getMoves())
+	moves2 = list(p2.getMoves())
 
 	log.debug("=== squares ===")
 	binfo = b.info
@@ -38,3 +48,6 @@ if __name__ == "__main__":
 	cinfo = cm.info
 	for c in cinfo:
 		log.debug("%s %s" % (c, cinfo[c]))
+	log.debug("=== moves ===")
+	log.debug("Move for %s: %s" % (p1, map(str, moves1)))
+	log.debug("Move for %s: %s" % (p2, map(str, moves2)))

@@ -44,6 +44,12 @@ class Board(object):
 			self.squares[name] = Square(name, x, y)
 		return self.squares[name]
 
+	def observeSquare(self, x, y):
+		for c in (x, y):
+			if c not in range(len(self.numbers)):
+				return None
+		return self.getSquare((x, y))
+
 	@property
 	def info(self):
 		return self.squares
@@ -80,8 +86,12 @@ class MovementManager(object):
 	def __init__(self):
 		self.movements = {}
 
-	def getMovement(name):
+	def getMovement(self, name):
 		if self.movements.get(name) is None:
 			log.debug("Get new movement %s" % name)
 			self.movements[name] = Movement(name)
 		return self.movements[name]
+
+	@property
+	def info(self):
+		return self.movements
