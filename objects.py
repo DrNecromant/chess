@@ -84,6 +84,13 @@ class Piece(object):
 				square = self.movement.observe(x, y)
 				if square is None:
 					break
+				piece = square.piece
+				if piece:
+					if piece.color == self.color:
+						break
+					else:
+						yield square
+						break
 				yield square
 		for dx, dy in self.movement.steps:
 			square = self.movement.observe(x0 + dx, y0 + dy)
