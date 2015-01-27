@@ -20,6 +20,8 @@ class Square(object):
 
 	@piece.setter
 	def piece(self, piece):
+		if self._piece is not None:
+			self._piece.capture()
 		self._piece = piece
 		if piece.square != self:
 			piece.square = self
@@ -40,6 +42,9 @@ class Piece(object):
 		if self._movement:
 			piece_attrs.append(str(self._movement))
 		return "-".join(piece_attrs)
+
+	def capture(self):
+		self._square = None
 
 	@property
 	def square(self):
@@ -75,6 +80,8 @@ class Piece(object):
 			movement.piece = self
 
 	def getMoves(self):
+		if not self.square:
+			return
 		x0, y0 = self.square.x, self.square.y
 		for dx, dy in self.movement.directions:
 			x, y = x0, y0
