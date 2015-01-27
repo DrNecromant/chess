@@ -31,6 +31,7 @@ if __name__ == "__main__":
 
 	p3.color = white
 	p3.square = s1
+	p1.square = s1
 
 	move.directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)])
 	move.observe = b.observeSquare
