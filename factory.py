@@ -13,36 +13,20 @@ class Board(object):
 		self.numbers = map(str, range(1, letters_range + 1))
 		self.letters = self.letters[:size]
 		self.numbers = self.numbers[:size]
-
-	def _check_pos_value(self, pos):
-		"""
-		Check that position value is correct. For example, "e4" or (4, 3)
-		"""
-		if type(pos) not in (tuple, str):
-			raise PositionError("Wrong square position type %s %s" % (pos, type(pos)))
-		if len(pos) != 2:
-			raise PositionError("Wrong square position length %s %s" % (pos, len(pos)))
-		if type(pos) == tuple:
-			for c in pos:
-				if type(c) != int or c not in range(len(self.numbers)):
-					raise PositionError("Wrong square coordinate %s in position %s" % (c, pos))
-		if type(pos) == str:
-			if pos[0] not in self.letters or pos[1] not in self.numbers:
-				raise PositionError("Wrong square coordinate in position %s" % pos)
+		# Init all squares
+		for l in self.letters:
+			for n in self.numbers:
+				name = l + n
+				x = self.letters.index(l)
+				y = self.numbers.index(n)
+				square = Square(name, x, y)
+				self.squares[name] = square
+				self.squares[(x, y)] = square
 
 	def getSquare(self, pos):
-		self._check_pos_value(pos)
-		if type(pos) == str:
-			name = pos
-			x = self.letters.index(pos[0])
-			y = self.numbers.index(pos[1])
-		else:
-			x, y = pos
-			name = self.letters[x] + self.numbers[y]
-		if self.squares.get(name) is None:
-			log.debug("Get new square %s" % name)
-			self.squares[name] = Square(name, x, y)
-		return self.squares[name]
+		if pos not in self.squares:
+			raise PositionError("Wrong position %s" % pos)
+		return self.squares[pos]
 
 	def observeSquare(self, x, y):
 		for c in (x, y):
