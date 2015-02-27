@@ -49,6 +49,9 @@ if __name__ == "__main__":
 	log.debug("=== pieces ===")
 	for p in pm.info:
 		log.debug(p)
+	log.debug("=== pieces_del ===")
+	for p in pm.info_del:
+		log.debug(p)
 	log.debug("=== colors ===")
 	cinfo = cm.info
 	for c in cinfo:

@@ -69,6 +69,7 @@ class Board(object):
 class PieceManager(object):
 	def __init__(self):
 		self.pieces = set()
+		self.pieces_del = set()
 
 	def createPiece(self, name):
 		log.debug("Create new piece %s" % name)
@@ -76,9 +77,17 @@ class PieceManager(object):
 		self.pieces.add(piece)
 		return piece
 
+	def removePiece(self, piece):
+		self.pieces().remove(piece)
+		self.pieces_del().add(piece)
+
 	@property
 	def info(self):
 		return self.pieces
+
+	@property
+	def info_del(self):
+		return self.pieces_del
 
 class ColorManager(object):
 	def __init__(self):
