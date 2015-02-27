@@ -1,24 +1,28 @@
 from factory import *
 from logger import log
 
+class Game(object):
+	def __init__(self):
+		self.bd = Board(8)
+		self.pm = PieceManager()
+		self.cm = ColorManager()
+		self.mm = MovementManager()
+
 if __name__ == "__main__":
-	b = Board(8)
-	pm = PieceManager()
-	cm = ColorManager()
-	mm = MovementManager()
+	g = Game()
 
-	s1 = b.getSquare("b4")
-	s2 = b.getSquare((0, 2))
-	s3 = b.getSquare("g2")
-	s4 = b.getSquare("c3")
+	s1 = g.bd.getSquare("b4")
+	s2 = g.bd.getSquare((0, 2))
+	s3 = g.bd.getSquare("g2")
+	s4 = g.bd.getSquare("c3")
 
-	p1 = pm.createPiece("Bishop")
-	p2 = pm.createPiece("Bishop")
-	p3 = pm.createPiece("Bishop")
+	p1 = g.pm.createPiece("Bishop")
+	p2 = g.pm.createPiece("Bishop")
+	p3 = g.pm.createPiece("Bishop")
 
-	black = cm.getColor("Black")
-	white = cm.getColor("White")
-	move = mm.getMovement("move", directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)]), steps = set())
+	black = g.cm.getColor("Black")
+	white = g.cm.getColor("White")
+	move = g.mm.getMovement("move", directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)]), steps = set())
 
 	p1.color = black
 	s2.piece = p1
@@ -37,25 +41,25 @@ if __name__ == "__main__":
 	p2.movement = move
 	p3.movement = move
 
-	moves1 = list(b.getMoves(p1))
-	moves2 = list(b.getMoves(p2))
-	moves3 = list(b.getMoves(p3))
+	moves1 = list(g.bd.getMoves(p1))
+	moves2 = list(g.bd.getMoves(p2))
+	moves3 = list(g.bd.getMoves(p3))
 
 	log.debug("=== squares ===")
-	binfo = b.info
-	for k in binfo:
-		s = binfo[k]
+	bdinfo = g.bd.info
+	for k in bdinfo:
+		s = bdinfo[k]
 		log.debug("%s %s %s %s" % (k, s.x, s.y, s.piece))
 	log.debug("=== pieces ===")
-	for p in pm.info:
+	for p in g.pm.info:
 		log.debug(p)
 	log.debug("=== pieces_del ===")
-	for p in pm.info_del:
+	for p in g.pm.info_del:
 		log.debug(p)
 	log.debug("=== colors ===")
-	cinfo = cm.info
-	for c in cinfo:
-		log.debug("%s %s" % (c, cinfo[c]))
+	cminfo = g.cm.info
+	for c in cminfo:
+		log.debug("%s %s" % (c, cminfo[c]))
 	log.debug("=== moves ===")
 	log.debug("Move for %s: %s" % (p1, map(str, moves1)))
 	log.debug("Move for %s: %s" % (p2, map(str, moves2)))
