@@ -80,11 +80,11 @@ class Color(object):
 		self._piece.add(piece)
 
 class Movement(object):
-	def __init__(self, name, directions, steps):
-		self.name = name
+	def __init__(self, mconf):
 		self._piece = set()
-		self.directions = directions
-		self.steps = steps
+		self.name = mconf["name"]
+		self.directions = mconf["directions"]
+		self.steps = mconf["steps"]
 
 	def __str__(self):
 		return self.name

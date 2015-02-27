@@ -1,22 +1,34 @@
 from factory import *
 from logger import log
 
+from config import *
+
 class Game(object):
-	def __init__(self):
+	def __init__(self, composition):
 		self.bd = Board(8)
 		self.pm = PieceManager()
 		self.cm = ColorManager()
 		self.mm = MovementManager()
+		self.setComposition(composition)
 
-	def setPiece(self, name, square, color, movement):
-		piece = self.pm.createPiece(name)
+	def setComposition(self, com):
+		for cname in com:
+			for pconf in com[cname]:
+				color = self.cm.getColor(cname)
+				mconf = pconf["movement"]
+				movement = self.mm.getMovement(mconf)
+				for sname in pconf["squares"]:
+					piece = self.pm.createPiece(pconf["name"])
+					square = self.bd.getSquare(sname)
+					self.setPiece(piece, square, color, movement)
+
+	def setPiece(self, piece, square, color, movement):
 		piece.square = square
 		piece.color = color
 		piece.movement = movement
 		square.piece = piece
 		color.piece = piece
 		movement.piece = piece
-		return piece
 
 	def movePiece(self, piece, square):
 		# Make the old square is empty
@@ -56,23 +68,7 @@ class Game(object):
 			yield s
 
 if __name__ == "__main__":
-	g = Game()
-
-	s1 = g.bd.getSquare("b4")
-	s2 = g.bd.getSquare((0, 2))
-	s3 = g.bd.getSquare("g2")
-	s4 = g.bd.getSquare("c3")
-
-	black = g.cm.getColor("Black")
-	white = g.cm.getColor("White")
-	move = g.mm.getMovement("move", directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)]), steps = set())
-
-	p1 = g.setPiece("Bishop1", s1, black, move)
-	g.movePiece(p1, s2)
-	g.movePiece(p1, s3)
-	p2 = g.setPiece("Bishop2", s4, white, move)
-	p3 = g.setPiece("Bishop3", s1, white, move)
-	g.movePiece(p1, s1)
+	g = Game(Composition)
 
 	log.debug("=== squares ===")
 	bdinfo = g.bd.info

@@ -80,10 +80,11 @@ class MovementManager(object):
 	def __init__(self):
 		self.movements = {}
 
-	def getMovement(self, name, directions, steps):
+	def getMovement(self, mconf):
+		name = mconf["name"]
 		if self.movements.get(name) is None:
 			log.debug("Get new movement %s" % name)
-			self.movements[name] = Movement(name, directions, steps)
+			self.movements[name] = Movement(mconf)
 		return self.movements[name]
 
 	@property
