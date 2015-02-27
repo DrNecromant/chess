@@ -34,6 +34,34 @@ class Board(object):
 				return None
 		return self.getSquare((x, y))
 
+	def getMoves(self, piece):
+		if not (piece.square and piece.movement):
+			return
+		x0, y0 = piece.square.x, piece.square.y
+		# get squares by directions
+		for dx, dy in piece.movement.directions:
+			x, y = x0, y0
+			while True:
+				x += dx
+				y += dy
+				s = self.observeSquare(x, y)
+				if s is None:
+					break
+				p = s.piece
+				if p:
+					if p.color == piece.color:
+						break
+					else:
+						yield s
+						break
+				yield s
+		# get squares by steps
+		for dx, dy in piece.movement.steps:
+			s = self.observeSquare(x0 + dx, y0 + dy)
+			if s is None:
+				break
+			yield s
+
 	@property
 	def info(self):
 		return self.squares
@@ -70,10 +98,10 @@ class MovementManager(object):
 	def __init__(self):
 		self.movements = {}
 
-	def getMovement(self, name):
+	def getMovement(self, name, directions, steps):
 		if self.movements.get(name) is None:
 			log.debug("Get new movement %s" % name)
-			self.movements[name] = Movement(name)
+			self.movements[name] = Movement(name, directions, steps)
 		return self.movements[name]
 
 	@property

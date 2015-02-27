@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
 	black = cm.getColor("Black")
 	white = cm.getColor("White")
-	move = mm.getMovement("move")
+	move = mm.getMovement("move", directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)]), steps = set())
 
 	p1.color = black
 	s2.piece = p1
@@ -33,15 +33,13 @@ if __name__ == "__main__":
 	p3.square = s1
 	p1.square = s1
 
-	move.directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)])
-	move.observe = b.observeSquare
 	move.piece = p1
 	p2.movement = move
 	p3.movement = move
 
-	moves1 = list(p1.getMoves())
-	moves2 = list(p2.getMoves())
-	moves3 = list(p3.getMoves())
+	moves1 = list(b.getMoves(p1))
+	moves2 = list(b.getMoves(p2))
+	moves3 = list(b.getMoves(p3))
 
 	log.debug("=== squares ===")
 	binfo = b.info
