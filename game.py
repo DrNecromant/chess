@@ -8,6 +8,34 @@ class Game(object):
 		self.cm = ColorManager()
 		self.mm = MovementManager()
 
+	def getMoves(self, piece):
+		if not (piece.square and piece.movement):
+			return
+		x0, y0 = piece.square.x, piece.square.y
+		# get squares by directions
+		for dx, dy in piece.movement.directions:
+			x, y = x0, y0
+			while True:
+				x += dx
+				y += dy
+				s = self.bd.observeSquare(x, y)
+				if s is None:
+					break
+				p = s.piece
+				if p:
+					if p.color == piece.color:
+						break
+					else:
+						yield s
+						break
+				yield s
+		# get squares by steps
+		for dx, dy in piece.movement.steps:
+			s = self.bd.observeSquare(x0 + dx, y0 + dy)
+			if s is None:
+				break
+			yield s
+
 if __name__ == "__main__":
 	g = Game()
 
@@ -41,9 +69,9 @@ if __name__ == "__main__":
 	p2.movement = move
 	p3.movement = move
 
-	moves1 = list(g.bd.getMoves(p1))
-	moves2 = list(g.bd.getMoves(p2))
-	moves3 = list(g.bd.getMoves(p3))
+	moves1 = list(g.getMoves(p1))
+	moves2 = list(g.getMoves(p2))
+	moves3 = list(g.getMoves(p3))
 
 	log.debug("=== squares ===")
 	bdinfo = g.bd.info
