@@ -8,6 +8,25 @@ class Game(object):
 		self.cm = ColorManager()
 		self.mm = MovementManager()
 
+	def setPiece(self, name, square, color, movement):
+		piece = self.pm.createPiece(name)
+		piece.square = square
+		piece.color = color
+		piece.movement = movement
+		square.piece = piece
+		color.piece = piece
+		movement.piece = piece
+		return piece
+
+	def movePiece(self, piece, square):
+		# Make the old square is empty
+		piece.square.piece = None
+		if square.piece:
+			# remove piece from new square
+			self.pm.removePiece(square.piece)
+		square.piece = piece
+		piece.square = square
+
 	def getMoves(self, piece):
 		if not (piece.square and piece.movement):
 			return
@@ -44,51 +63,31 @@ if __name__ == "__main__":
 	s3 = g.bd.getSquare("g2")
 	s4 = g.bd.getSquare("c3")
 
-	p1 = g.pm.createPiece("Bishop")
-	p2 = g.pm.createPiece("Bishop")
-	p3 = g.pm.createPiece("Bishop")
-
 	black = g.cm.getColor("Black")
 	white = g.cm.getColor("White")
 	move = g.mm.getMovement("move", directions = set([(1, 1), (1, -1), (-1, 1), (-1, -1)]), steps = set())
 
-	p1.color = black
-	s2.piece = p1
-	p1.square = s1
-	s3.piece = p1
-	p1.square = s2
-
-	p2.color = white
-	p2.square = s4
-
-	p3.color = white
-	p3.square = s1
-	p1.square = s1
-
-	move.piece = p1
-	p2.movement = move
-	p3.movement = move
-
-	moves1 = list(g.getMoves(p1))
-	moves2 = list(g.getMoves(p2))
-	moves3 = list(g.getMoves(p3))
+	p1 = g.setPiece("Bishop1", s1, black, move)
+	g.movePiece(p1, s2)
+	g.movePiece(p1, s3)
+	p2 = g.setPiece("Bishop2", s4, white, move)
+	p3 = g.setPiece("Bishop3", s1, white, move)
+	g.movePiece(p1, s1)
 
 	log.debug("=== squares ===")
 	bdinfo = g.bd.info
-	for k in bdinfo:
-		s = bdinfo[k]
-		log.debug("%s %s %s %s" % (k, s.x, s.y, s.piece))
+	for l in g.bd.letters:
+		for n in g.bd.numbers:
+			k = l + n
+			s = bdinfo[k]
+			log.debug("%s %s %s %s" % (k, s.x, s.y, s.piece))
 	log.debug("=== pieces ===")
 	for p in g.pm.info:
-		log.debug(p)
+		log.debug("%s: %s" % (p, map(str, g.getMoves(p))))
 	log.debug("=== pieces_del ===")
 	for p in g.pm.info_del:
-		log.debug(p)
+		log.debug("%s: %s" % (p, map(str, g.getMoves(p))))
 	log.debug("=== colors ===")
 	cminfo = g.cm.info
 	for c in cminfo:
 		log.debug("%s %s" % (c, cminfo[c]))
-	log.debug("=== moves ===")
-	log.debug("Move for %s: %s" % (p1, map(str, moves1)))
-	log.debug("Move for %s: %s" % (p2, map(str, moves2)))
-	log.debug("Move for %s: %s" % (p3, map(str, moves3)))

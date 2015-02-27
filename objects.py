@@ -11,20 +11,13 @@ class Square(object):
 	def __str__(self):
 		return self.name
 
-	def clear(self):
-		self._piece = None
-
 	@property
 	def piece(self):
 		return self._piece
 
 	@piece.setter
 	def piece(self, piece):
-		if self._piece is not None:
-			self._piece.capture()
 		self._piece = piece
-		if piece.square != self:
-			piece.square = self
 
 class Piece(object):
 	def __init__(self, name):
@@ -52,12 +45,7 @@ class Piece(object):
 
 	@square.setter
 	def square(self, square):
-		if self._square is not None:
-			# clear old square
-			self._square.clear()
 		self._square = square
-		if square.piece != self:
-			square.piece = self
 
 	@property
 	def color(self):
@@ -66,8 +54,6 @@ class Piece(object):
 	@color.setter
 	def color(self, color):
 		self._color = color
-		if self not in color.piece:
-			color.piece = self
 
 	@property
 	def movement(self):
@@ -76,8 +62,6 @@ class Piece(object):
 	@movement.setter
 	def movement(self, movement):
 		self._movement = movement
-		if self not in movement.piece:
-			movement.piece = self
 
 class Color(object):
 	def __init__(self, name):
@@ -94,8 +78,6 @@ class Color(object):
 	@piece.setter
 	def piece(self, piece):
 		self._piece.add(piece)
-		if piece.color != self:
-			piece.color = self
 
 class Movement(object):
 	def __init__(self, name, directions, steps):
@@ -114,5 +96,3 @@ class Movement(object):
 	@piece.setter
 	def piece(self, piece):
 		self._piece.add(piece)
-		if piece.movement != self:
-			piece.movement = self
