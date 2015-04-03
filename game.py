@@ -76,7 +76,8 @@ if __name__ == "__main__":
 		for n in g.bd.numbers:
 			k = l + n
 			s = bdinfo[k]
-			log.debug("%s %s %s %s" % (k, s.x, s.y, s.piece))
+			if s.piece is not None:
+				log.debug("%s %s %s %s" % (k, s.x, s.y, s.piece))
 	log.debug("=== pieces ===")
 	for p in g.pm.info:
 		log.debug("%s: %s" % (p, map(str, g.getMoves(p))))
