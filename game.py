@@ -3,6 +3,35 @@ from logger import log
 
 from config import *
 
+class Board(SquareManager):
+	def __init__(self, size):
+		SquareManager.__init__(self)
+		self.letters = list(string.ascii_lowercase)
+		letters_range = len(self.letters)
+		if size > letters_range:
+			raise BoardError("Board size %s exceeds letter's range %s" % (size, letters_range))
+		self.numbers = map(str, range(1, letters_range + 1))
+		self.letters = self.letters[:size]
+		self.numbers = self.numbers[:size]
+		# Init all squares
+		for l in self.letters:
+			for n in self.numbers:
+				name = l + n
+				x = self.letters.index(l)
+				y = self.numbers.index(n)
+				self.createSquare(name, x, y)
+
+	def getSquare(self, pos):
+		if pos not in self.squares:
+			raise PositionError("Wrong position %s" % pos)
+		return self.squares[pos]
+
+	def observeSquare(self, x, y):
+		for c in (x, y):
+			if c not in range(len(self.numbers)):
+				return None
+		return self.getSquare((x, y))
+
 class Game(object):
 	def __init__(self, composition):
 		self.bd = Board(8)
