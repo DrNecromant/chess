@@ -51,6 +51,7 @@ class PieceManager(object):
 
 	def removePiece(self, piece):
 		piece.square = None
+		piece.square.piece = None
 		self.pieces.remove(piece)
 		self.pieces_del.add(piece)
 
