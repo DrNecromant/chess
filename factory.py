@@ -34,6 +34,9 @@ class Board(object):
 				return None
 		return self.getSquare((x, y))
 
+	def cleanSquare(self, square):
+		square.piece = None
+
 	@property
 	def info(self):
 		return self.squares

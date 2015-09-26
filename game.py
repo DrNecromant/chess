@@ -22,22 +22,23 @@ class Game(object):
 					square = self.bd.getSquare(sname)
 					self.setPiece(piece, square, color, movement)
 
-	def setPiece(self, piece, square, color, movement):
+	def setPiece(self, piece, square, color = None, movement = None):
 		piece.square = square
-		piece.color = color
-		piece.movement = movement
 		square.piece = piece
-		color.piece = piece
-		movement.piece = piece
+		if color:
+			piece.color = color
+			color.piece = piece
+		if movement:
+			piece.movement = movement
+			movement.piece = piece
 
 	def movePiece(self, piece, square):
 		# Make the old square is empty
-		piece.square.piece = None
+		self.bd.cleanSquare(piece.square)
 		if square.piece:
 			# remove piece from new square
 			self.pm.removePiece(square.piece)
-		square.piece = piece
-		piece.square = square
+		self.setPiece(piece, square)
 
 	def getMoves(self, piece):
 		if not (piece.square and piece.movement):
