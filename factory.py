@@ -1,13 +1,13 @@
 from logger import log
 import string
 from objects import *
-from errors import *
 
 class SquareManager(object):
 	def __init__(self):
 		self.squares = {}
 
 	def createSquare(self, name, x, y):
+		log.debug("Get new square %s" % name)
 		square = Square(name, x, y)
 		self.squares[name] = square
 		self.squares[(x, y)] = square
@@ -25,7 +25,7 @@ class PieceManager(object):
 		self.pieces_del = set()
 
 	def createPiece(self, name):
-		log.debug("Create new piece %s" % name)
+		log.debug("Get new piece %s" % name)
 		piece = Piece(name)
 		self.pieces.add(piece)
 		return piece

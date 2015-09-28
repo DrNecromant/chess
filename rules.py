@@ -2,6 +2,7 @@ from factory import *
 from logger import log
 
 from config import *
+from errors import *
 
 class Board(SquareManager):
 	def __init__(self, size):

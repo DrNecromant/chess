@@ -1,6 +1,3 @@
-from logger import log
-from errors import *
-
 class Square(object):
 	def __init__(self, name, x, y):
 		self._piece = None
