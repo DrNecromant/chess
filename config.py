@@ -18,7 +18,7 @@ RM = {
 	"steps": set()
 }
 
-Composition = {
+Position = {
 	White: [
 		{
 			"name": B,

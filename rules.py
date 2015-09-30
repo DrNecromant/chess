@@ -34,14 +34,13 @@ class Board(SquareManager):
 		return self.getSquare((x, y))
 
 class Game(object):
-	def __init__(self, composition):
-		self.bd = Board(8)
+	def __init__(self, size):
+		self.bd = Board(size)
 		self.pm = PieceManager()
 		self.cm = ColorManager()
 		self.mm = MovementManager()
-		self.setComposition(composition)
 
-	def setComposition(self, com):
+	def setPosition(self, com):
 		for cname in com:
 			for pconf in com[cname]:
 				color = self.cm.getColor(cname)
@@ -99,7 +98,8 @@ class Game(object):
 			yield s
 
 if __name__ == "__main__":
-	g = Game(Composition)
+	g = Game(8)
+	g.setPosition(Position)
 
 	log.debug("=== squares ===")
 	bdinfo = g.bd.info
