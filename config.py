@@ -18,29 +18,25 @@ RM = {
 	"steps": set()
 }
 
-Position = {
-	White: [
-		{
-			"name": B,
-			"movement": BM,
-			"squares": ("c1", "f1")
-		},
-		{
-			"name": R,
-			"movement": RM,
-			"squares": ("a1", "h1")
-		}
-	],
-	Black: [
-		{
-			"name": B,
-			"movement": BM,
-			"squares": ("c8", "f8")
-		},
-		{
-			"name": R,
-			"movement": RM,
-			"squares": ("a8", "h8")
-		}
-	]
+PIECES = {
+	"B": {
+		"name": B,
+		"movement": BM,
+		"color": White
+	},
+	"R": {
+		"name": R,
+		"movement": RM,
+		"color": White
+	},
+	"b": {
+		"name": B,
+		"movement": BM,
+		"color": Black
+	},
+	"r": {
+		"name": R,
+		"movement": RM,
+		"color": Black
+	},
 }

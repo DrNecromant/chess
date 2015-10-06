@@ -40,16 +40,15 @@ class Game(object):
 		self.cm = ColorManager()
 		self.mm = MovementManager()
 
-	def setPosition(self, com):
-		for cname in com:
-			for pconf in com[cname]:
-				color = self.cm.getColor(cname)
-				mconf = pconf["movement"]
-				movement = self.mm.getMovement(mconf)
-				for sname in pconf["squares"]:
-					piece = self.pm.createPiece(pconf["name"])
-					square = self.bd.getSquare(sname)
-					self.setPiece(piece, square, color, movement)
+	def setPosition(self, pos):
+		for pname in [pos[i:i+3] for i in range(0, len(pos), 3)]:
+			piece_config = PIECES[pname[0]]
+			square_name = pname[1:]
+			piece = self.pm.createPiece(piece_config["name"])
+			movement = self.mm.getMovement(piece_config["movement"])
+			color = self.cm.getColor(piece_config["color"])
+			square = self.bd.getSquare(square_name)
+			self.setPiece(piece, square, color, movement)
 
 	def setPiece(self, piece, square, color = None, movement = None):
 		piece.square = square
@@ -99,7 +98,7 @@ class Game(object):
 
 if __name__ == "__main__":
 	g = Game(8)
-	g.setPosition(Position)
+	g.setPosition("Ra1Rh1ra8rh8Bc1Bf1bc8bf8")
 
 	log.debug("=== squares ===")
 	bdinfo = g.bd.info
