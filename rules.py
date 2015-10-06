@@ -42,13 +42,22 @@ class Game(object):
 
 	def setPosition(self, pos):
 		for pname in [pos[i:i+3] for i in range(0, len(pos), 3)]:
-			piece_config = PIECES[pname[0]]
+			piece_id = pname[0]
 			square_name = pname[1:]
+			piece_config = PIECES[piece_id]
 			piece = self.pm.createPiece(piece_config["name"])
 			movement = self.mm.getMovement(piece_config["movement"])
 			color = self.cm.getColor(piece_config["color"])
 			square = self.bd.getSquare(square_name)
+			piece.id = piece_id
 			self.setPiece(piece, square, color, movement)
+
+	def getPosition(self):
+		pos = str()
+		for piece in self.pm.pieces:
+			pos += piece.id
+			pos += piece.square.name
+		return pos
 
 	def setPiece(self, piece, square, color = None, movement = None):
 		piece.square = square
@@ -118,3 +127,5 @@ if __name__ == "__main__":
 	cminfo = g.cm.info
 	for c in cminfo:
 		log.debug("%s %s" % (c, cminfo[c]))
+	log.debug("=== position ===")
+	log.debug(g.getPosition())

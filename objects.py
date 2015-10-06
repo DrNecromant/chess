@@ -18,13 +18,18 @@ class Square(object):
 
 class Piece(object):
 	def __init__(self, name):
+		self.id = None
 		self.name = name
 		self._square = None
 		self._color = None
 		self._movement = None
 
 	def __str__(self):
-		piece_attrs = [self.name]
+		piece_attrs = list()
+		if self.id:
+			piece_attrs.append(str(self.id))
+		if self.name:
+			piece_attrs.append(str(self.name))
 		if self._color:
 			piece_attrs.append(str(self._color))
 		if self._square:
