@@ -1,6 +1,7 @@
 import Tkinter as tk
+
 class GameBoard(tk.Frame):
-    def __init__(self, parent, rows=8, columns=8, size=64, color1="white", color2="blue"):
+    def __init__(self, parent, rows=8, columns=8, size=64, color1="white", color2="gray"):
         '''size is the size of a square, in pixels'''
 
         self.rows = rows
@@ -55,11 +56,11 @@ class GameBoard(tk.Frame):
         self.canvas.tag_raise("piece")
         self.canvas.tag_lower("square")
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    board = GameBoard(root)
-    board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-    imagedata = """
+def drawBoard(position):
+	root = tk.Tk()
+	board = GameBoard(root)
+	board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+	imagedata = """
 R0lGODlhPAA8APUwAAAAAAEBAQICAgQEBAYGBggICA4ODhMTExcXFx4eHh8fHyAgICYmJjo
 6Ojw8PEJCQktLS1FRUVNTU1dXV1hYWFxcXGBgYHNzc3R0dHV1dXZ2dnd3d3t7e4mJiZWVla
 CgoKampqioqKysrLe3t7m5udra2t/f3+Dg4Onp6ezs7PT09Pb29vf39/j4+Pz8/P7+/v///
@@ -71,8 +72,7 @@ cNn3JSh34N5YA0oLejp6ugrF3+AAA+xtPSyLxtijAADBf3+//0IuNkkLh/BgnwqgAjBsKHD
 hw418CFRr2JFFnwQTKDAsaPHjx4ZHERIruDAkuIQCcmmsoi1bSa5sYkZ8w7Nmk5u6jS45OY
 TSpp9Tno51LKo0aNIkypdynRIEAA7
 """
-    image = tk.PhotoImage(data = imagedata)
-    #image = tk.PhotoImage(file = "Chess_bdt60.gif")
-    board.addpiece("smile1", image, 1,1)
-    board.addpiece("smile2", image, 2,2)
-    root.mainloop()
+	image = tk.PhotoImage(data = imagedata)
+	board.addpiece("smile1", image, 1,1)
+	board.addpiece("smile2", image, 2,2)
+	root.mainloop()

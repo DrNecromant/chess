@@ -1,4 +1,5 @@
 from rules import Board, Game
+from graph import drawBoard
 from logger import log
 
 g = Game(8)
@@ -24,3 +25,6 @@ for c in cminfo:
 	log.debug("%s %s" % (c, cminfo[c]))
 log.debug("=== position ===")
 log.debug(g.getPosition())
+
+
+drawBoard("bc1")

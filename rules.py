@@ -23,9 +23,17 @@ class Board(SquareManager):
 				self.createSquare(name, x, y)
 
 	def getSquare(self, pos):
-		if pos not in self.squares:
-			raise PositionError("Wrong position %s" % pos)
-		return self.squares[pos]
+		if pos in self.squares:
+			return self.squares[pos]
+		try:
+			# Convert square name to coord
+			x, y = pos
+			pos = self.letters[x] + self.numbers[y] 
+		except:
+			PositionError("Wrong position %s" % pos)
+		if pos in self.squares:
+			return self.squares[pos]
+		raise PositionError("Wrong position %s" % pos)
 
 	def observeSquare(self, x, y):
 		for c in (x, y):

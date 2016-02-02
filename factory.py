@@ -10,7 +10,6 @@ class SquareManager(object):
 		log.debug("Get new square %s" % name)
 		square = Square(name, x, y)
 		self.squares[name] = square
-		self.squares[(x, y)] = square
 
 	def cleanSquare(self, square):
 		square.piece = None
