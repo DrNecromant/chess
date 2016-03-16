@@ -1,4 +1,7 @@
 import Tkinter as tk
+from config import PIECES
+from consts import *
+from time import sleep
 
 class GameBoard(tk.Frame):
     def __init__(self, parent, rows=8, columns=8, size=64, color1="white", color2="gray"):
@@ -23,14 +26,14 @@ class GameBoard(tk.Frame):
         # changes the window size
         self.canvas.bind("<Configure>", self.refresh)
 
-    def addpiece(self, name, image, row=0, column=0):
+    def addpiece(self, name, image, column=0, row=0):
         '''Add a piece to the playing board'''
         self.canvas.create_image(0,0, image=image, tags=(name, "piece"), anchor="c")
-        self.placepiece(name, row, column)
+        self.placepiece(name, column, row)
 
-    def placepiece(self, name, row, column):
+    def placepiece(self, name, column, row):
         '''Place a piece at the given row/column'''
-        self.pieces[name] = (row, column)
+        self.pieces[name] = (column, row)
         x0 = (column * self.size) + int(self.size/2)
         y0 = (row * self.size) + int(self.size/2)
         self.canvas.coords(name, x0, y0)
@@ -56,23 +59,22 @@ class GameBoard(tk.Frame):
         self.canvas.tag_raise("piece")
         self.canvas.tag_lower("square")
 
-def drawBoard(position):
+def drawBoard(pos):
 	root = tk.Tk()
+	w = 64 * 8
+	h = 64 * 8
+	ws = root.winfo_screenwidth()
+	hs = root.winfo_screenheight()
+	x = (ws/2) - (w/2)
+	y = (hs/2) - (h/2)
+	root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 	board = GameBoard(root)
 	board.pack(side="top", fill="both", expand="true", padx=4, pady=4)
-	imagedata = """
-R0lGODlhPAA8APUwAAAAAAEBAQICAgQEBAYGBggICA4ODhMTExcXFx4eHh8fHyAgICYmJjo
-6Ojw8PEJCQktLS1FRUVNTU1dXV1hYWFxcXGBgYHNzc3R0dHV1dXZ2dnd3d3t7e4mJiZWVla
-CgoKampqioqKysrLe3t7m5udra2t/f3+Dg4Onp6ezs7PT09Pb29vf39/j4+Pz8/P7+/v///
-wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAADEA
-LAAAAAA8ADwAAAb+wJhwSCwaj8ikcslsOp/QqHRKrVqv2Kx2y+02AWCANxsOj63l8pmaNq+
-lbfAbHp/T0/ZoOw+Ny/lKfmqAR4J4hESGdYiKfoSCHSMCjnyGJjAKgpWCJzALhnZxARkfHy
-owIh8eBotvcQcuMLKzMBKta34OFhYpMBgWEJO3Y4qdn6CuhiUwCYpzihEcAc7JjdS41sjV2
-cNn3JSh34N5YA0oLejp6ugrF3+AAA+xtPSyLxtijAADBf3+//0IuNkkLh/BgnwqgAjBsKHD
-hw418CFRr2JFFnwQTKDAsaPHjx4ZHERIruDAkuIQCcmmsoi1bSa5sYkZ8w7Nmk5u6jS45OY
-TSpp9Tno51LKo0aNIkypdynRIEAA7
-"""
-	image = tk.PhotoImage(data = imagedata)
-	board.addpiece("smile1", image, 1,1)
-	board.addpiece("smile2", image, 2,2)
+	images = dict()
+	for pname in [pos[i:i+3] for i in range(0, len(pos), 3)]:
+		piece_id = pname[0]
+		x = LETTERS.index(pname[1])
+		y = 7 - NUMBERS.index(pname[2])
+		images[pname] = tk.PhotoImage(data = PIECES[piece_id]["image"])
+		board.addpiece(pname, images[pname], x, y)
 	root.mainloop()

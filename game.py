@@ -2,8 +2,10 @@ from rules import Board, Game
 from graph import drawBoard
 from logger import log
 
+POS = "ke1Ke8ra1rh1Ra8Rh8bc1bf1Bc8Bf8nb1ng1Nb8Ng8qd1Qd8pa2pb2pc2pd2pe2pf2pg2ph2Pa7Pb7Pc7Pd7Pe7Pf7Pg7Ph7"
+
 g = Game(8)
-g.setPosition("Ra1Rh1ra8rh8Bc1Bf1bc8bf8")
+g.setPosition(POS)
 
 log.debug("=== squares ===")
 bdinfo = g.bd.info
@@ -26,5 +28,4 @@ for c in cminfo:
 log.debug("=== position ===")
 log.debug(g.getPosition())
 
-
-drawBoard("bc1")
+drawBoard(POS)

@@ -2,18 +2,16 @@ from factory import *
 from logger import log
 
 from config import *
+from consts import LETTERS, NUMBERS
 from errors import *
 
 class Board(SquareManager):
 	def __init__(self, size):
 		SquareManager.__init__(self)
-		self.letters = list(string.ascii_lowercase)
-		letters_range = len(self.letters)
-		if size > letters_range:
-			raise BoardError("Board size %s exceeds letter's range %s" % (size, letters_range))
-		self.numbers = map(str, range(1, letters_range + 1))
-		self.letters = self.letters[:size]
-		self.numbers = self.numbers[:size]
+		if size > len(LETTERS):
+			raise BoardError("Board size %s exceeds letter's range" % size)
+		self.letters = LETTERS[:size]
+		self.numbers = NUMBERS[:size]
 		# Init all squares
 		for l in self.letters:
 			for n in self.numbers:
@@ -110,5 +108,7 @@ class Game(object):
 		for dx, dy in piece.movement.steps:
 			s = self.bd.observeSquare(x0 + dx, y0 + dy)
 			if s is None:
-				break
+				continue
+			if s.piece and s.piece.color == piece.color:
+				continue
 			yield s

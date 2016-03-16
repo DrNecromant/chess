@@ -1,5 +1,4 @@
 from logger import log
-import string
 from objects import *
 
 class SquareManager(object):
